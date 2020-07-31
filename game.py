@@ -42,12 +42,16 @@ class Game:
         try:
             coord_list = user_input.split(",")
             x, y = int(coord_list[0]), int(coord_list[1])
-            if 0 < x < 11 and 0 < y < 11:
-                return True, x, y
-            self.message = "Invalid input, x and y should be in range 1 to 10."
+            return True, x, y
+        except TypeError:
+            self.message = "Invalid input, use only numbers"
             return False, None, None
-        except (TypeError, ValueError):
-            self.message = "Invalid input, use following pattern: 'x,y'."
+        except ValueError:
+            self.message = \
+                "Invalid input, x and y should be integer in range 1 to 10."
+            return False, None, None
+        except IndexError:
+            self.message = "Invalid input, enter both 'x,y' coordinates"
             return False, None, None
 
     def greet(self):
@@ -74,7 +78,7 @@ class Game:
         while True:
             self._draw_fields()
             print(f"\n{self.active_player.name}'s turn. {self.message}")
-            player_input = input("Input x,y coordinates of your shot >>>")
+            player_input = input("Input 'x,y' coordinates of your shot >>>")
 
             valid = self._validate(player_input)
             if valid[0]:
